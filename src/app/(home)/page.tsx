@@ -1,13 +1,13 @@
 import db from "@/db";
 import { FrameColor, FrameMap } from "@/db/format";
 import { ICameraListItem } from "@/db/interface";
-import { Badge, BadgeProps, Box, Card, Text } from "@radix-ui/themes";
+import { Badge, BadgeProps, Box, Card, Text, Tooltip } from "@radix-ui/themes";
 
 export default async function Home() {
   async function getCameras() {
     "use server";
     const result = await db.query(
-      "select id, brand, model, publishDate, weight, effectivePixels, frame from camera order by publishDate desc,createdAt desc limit 30"
+      "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize from camera order by publishDate desc,createdAt desc limit 30"
     );
     return result[0] as ICameraListItem[];
   }
@@ -19,7 +19,9 @@ export default async function Home() {
         {res.map((item) => (
           <Card key={item.id} className="w-[220px] flex-grow" variant="surface">
             <div>
-              <Text>{item.model}</Text>
+              <Tooltip content={item.model}>
+                <p className="inline-flex">{item.alias || item.model}</p>
+              </Tooltip>
               <p className="text-xs text-gray-300">
                 {item.publishDate?.toLocaleDateString()}
               </p>
@@ -28,10 +30,24 @@ export default async function Home() {
             <div className="mt-2">
               <p className="text-gray-400 text-sm">{item.brand}</p>
               <div className="flex gap-1 mt-1">
-                <Badge color={FrameColor[item.frame] as BadgeProps["color"]}>
-                  {FrameMap[item.frame]}
-                </Badge>
-                <Badge color="gray">{item.effectivePixels}W</Badge>
+                <Tooltip
+                  content={item.imageSensorSize
+                    ?.map((item) => item + "mm")
+                    .join(" x ")}
+                >
+                  <Badge
+                    color={FrameColor[item.frame] as BadgeProps["color"]}
+                    className={item.imageSensorSize && "cursor-pointer"}
+                  >
+                    {FrameMap[item.frame]}
+                  </Badge>
+                </Tooltip>
+
+                <Tooltip content={item.imageSensor}>
+                  <Badge color="gray" className="cursor-pointer">
+                    {item.effectivePixels}W
+                  </Badge>
+                </Tooltip>
                 <Badge>{item.weight}g</Badge>
               </div>
             </div>

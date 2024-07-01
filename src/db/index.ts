@@ -1,9 +1,10 @@
 import mysql, { PoolOptions } from "mysql2/promise";
 
 const access: PoolOptions = {
-  user: "root",
-  password: "123456",
-  database: "cameras",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
 };
 const conn = mysql.createPool(access);
 

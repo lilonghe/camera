@@ -18,8 +18,12 @@ export default async function Home() {
     <main className="page content">
       <section className="flex flex-wrap justify-between gap-y-5 gap-x-3">
         {res.map((item) => (
-          <Link key={item.id} href={"/camera/" + item.id}>
-            <Card className="w-[220px] flex-grow" variant="surface">
+          <Link
+            key={item.id}
+            href={"/camera/" + item.id}
+            className="w-[220px] flex-grow"
+          >
+            <Card variant="surface">
               <div>
                 <Tooltip content={item.model}>
                   <p className="inline-flex">{item.alias || item.model}</p>

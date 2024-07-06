@@ -3,14 +3,16 @@ import { FrameColor, FrameMap } from "@/db/format";
 import { IPageProps } from "@/types/interface";
 import { Badge, BadgeProps, Card, Tooltip } from "@radix-ui/themes";
 import Link from "next/link";
+import Filter from "./components/filter";
 
 export default async function Home({ searchParams }: IPageProps) {
-  const res = await getCameras();
+  const res = await getCameras({ keyword: searchParams["keyword"] });
   const compareFromId = searchParams["id"];
 
   return (
     <main className="page content">
-      <section className="flex flex-wrap justify-between gap-y-5 gap-x-3">
+      <Filter keyword={searchParams["keyword"]} />
+      <section className="flex flex-wrap justify-between gap-y-5 gap-x-3 mt-2">
         {res.map((item) => (
           <Link
             key={item.id}
@@ -58,6 +60,11 @@ export default async function Home({ searchParams }: IPageProps) {
             </Card>
           </Link>
         ))}
+        {res.length <= 0 && (
+          <div className="leading-[100px] text-center text-gray-400 text-sm">
+            未搜索到相关结果
+          </div>
+        )}
       </section>
     </main>
   );

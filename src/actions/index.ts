@@ -2,11 +2,31 @@
 import db from "@/db";
 import { ICameraListItem } from "@/db/interface";
 import { IPageProps } from "@/types/interface";
+import { revalidatePath } from "next/cache";
 
-export async function getCameras() {
+export async function getCameras({ keyword = "" }) {
+  keyword = keyword.replaceAll("-", "").toLowerCase();
+
+  let condition = "where 1 = 1",
+    values: any = {};
+  if (keyword) {
+    condition += ` and (
+      LOWER(REPLACE(model, '-', '')) LIKE :keyword or
+      LOWER(REPLACE(alias, '-', '')) LIKE :keyword or
+      LOWER(brand) LIKE :keyword
+    )`;
+    values.keyword = `%${keyword}%`;
+  }
   const result = await db.query(
-    "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize from camera order by publishDate desc,createdAt desc limit 30"
+    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize 
+    from camera 
+    ${condition}
+    order by publishDate desc,createdAt desc 
+    limit 30`,
+    values
   );
+
+  revalidatePath("/");
   return result[0] as ICameraListItem[];
 }
 

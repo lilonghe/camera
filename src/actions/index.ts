@@ -11,9 +11,7 @@ export async function getCameras({ keyword = "" }) {
     values: any = {};
   if (keyword) {
     condition += ` and (
-      LOWER(REPLACE(model, '-', '')) LIKE :keyword or
-      LOWER(REPLACE(alias, '-', '')) LIKE :keyword or
-      LOWER(brand) LIKE :keyword
+      keyword LIKE :keyword
     )`;
     values.keyword = `%${keyword}%`;
   }

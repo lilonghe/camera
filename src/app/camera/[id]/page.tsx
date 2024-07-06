@@ -1,100 +1,102 @@
-import db from "@/db";
-import { FrameColor, FrameMap } from "@/db/format";
-import { ICameraListItem } from "@/db/interface";
-import { AspectRatio, BadgeProps, Tooltip, Badge } from "@radix-ui/themes";
+import { getCamera } from "@/actions";
+import { IPageProps } from "@/types/interface";
+import { Button } from "@radix-ui/themes";
+import Link from "next/link";
+import { ReactNode } from "react";
+import Dimension from "./components/dimension";
+import ImageSensor from "./components/image-sensor";
+import MetaInfo from "./components/meta-info";
 
-interface IParams {
-  id: string;
-}
+const TargetWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="ml-2 pl-2 border-l border-dashed inline-flex items-center">
+      {children}
+    </div>
+  );
+};
 
-export default async function CameraDetail({ params }: { params: IParams }) {
-  async function getCameras({ id }: IParams) {
-    "use server";
-    const result = await db.query(
-      "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList from camera where id = ?",
-      [id]
-    );
-    return (result[0] as ICameraListItem[])[0];
+export default async function CameraDetail({
+  params,
+  searchParams,
+}: IPageProps) {
+  const res = await getCamera({ id: params.id });
+
+  let target;
+  if (searchParams["targetId"]) {
+    target = await getCamera({ id: searchParams["targetId"] });
   }
-
-  const res = await getCameras({ id: params.id });
-
-  const scaleFactor = 3;
 
   return (
     <div className="page content">
-      <h2 className="text-3xl font-medium">
+      <h2 className="text-3xl font-medium flex items-center">
         {res.brand} {res.alias || res.model}
+        {target && (
+          <>
+            <Button asChild variant="soft" size={"1"} className="ml-1">
+              <Link href={"/?from=compare&id=" + target?.id}>更换</Link>
+            </Button>
+            <TargetWrapper>
+              {target?.brand} {target?.alias || target?.model}
+              <Button asChild variant="soft" size={"1"} className="ml-1">
+                <Link href={"/?from=compare&id=" + res.id}>更换</Link>
+              </Button>
+            </TargetWrapper>
+          </>
+        )}
       </h2>
-      <p className="text-gray-400 text-sm">
+      <div className="text-gray-400 text-sm">
         {res.publishDate?.toLocaleDateString()}
-      </p>
-      <div className="mt-2">
-        <div className="flex gap-1 mt-1">
-          <Tooltip
-            content={res.imageSensorSize?.map((res) => res + "mm").join(" x ")}
-          >
-            <Badge
-              color={FrameColor[res.frame] as BadgeProps["color"]}
-              className={res.imageSensorSize && "cursor-pointer"}
-            >
-              {FrameMap[res.frame]}
-            </Badge>
-          </Tooltip>
-
-          <Tooltip content={res.imageSensor}>
-            <Badge color="gray" className="cursor-pointer">
-              {res.effectivePixels}W
-            </Badge>
-          </Tooltip>
-          <Badge>{res.weight}g</Badge>
-        </div>
+        {target && (
+          <TargetWrapper>
+            {target.publishDate?.toLocaleDateString()}
+          </TargetWrapper>
+        )}
       </div>
-      {res.imageSensorSize && (
-        <div className="mt-2">
-          <div
-            style={{
-              width: res.imageSensorSize[0] * scaleFactor,
-            }}
-          >
-            <AspectRatio
-              ratio={res.imageSensorSize[0] / res.imageSensorSize[1]}
-              className="rounded bg-gray-500 opacity-50"
-            />
+      <div className="mt-2 flex">
+        <MetaInfo {...res} />
+        {target && (
+          <TargetWrapper>
+            <MetaInfo {...target} />
+          </TargetWrapper>
+        )}
+      </div>
+      {(res.imageSensorSize || target?.imageSensorSize) && (
+        <>
+          <div className="mt-5 font-thin">传感器</div>
+          <div className="mt-1 flex gap-2 items-end">
+            <ImageSensor imageSensorSize={res.imageSensorSize} />
+            {target && <ImageSensor imageSensorSize={target.imageSensorSize} />}
           </div>
-        </div>
+        </>
       )}
 
-      {res.dimensionsList && (
-        <div className="flex gap-2 select-none text-sm">
-          <div
-            className="mt-2"
-            style={{
-              width: res.dimensionsList[0] * scaleFactor,
-            }}
-          >
-            <AspectRatio
-              ratio={res.dimensionsList[0] / res.dimensionsList[1]}
-              className="border border-dashed border-gray-400 text-gray-400 rounded flex items-center justify-center"
-            >
-              {res.dimensionsList[0]}mm x {res.dimensionsList[1]}mm
-            </AspectRatio>
+      {(res.dimensionsList || target?.dimensionsList) && (
+        <>
+          <div className="mt-5 font-thin">尺寸预览</div>
+          <div className="overflow-y-auto flex flex-col gap-2 mt-1">
+            <Dimension dimensionsList={res.dimensionsList} />
+            {target && <Dimension dimensionsList={target.dimensionsList} />}
           </div>
-          <div
-            className="mt-2"
-            style={{
-              width: res.dimensionsList[2] * 3,
-            }}
-          >
-            <AspectRatio
-              ratio={res.dimensionsList[2] / res.dimensionsList[1]}
-              className="border border-dashed border-gray-400 text-gray-400 rounded flex items-center justify-center"
-            >
-              {res.dimensionsList[2]}mm x {res.dimensionsList[1]}mm
-            </AspectRatio>
-          </div>
-        </div>
+        </>
       )}
+
+      {!target && (
+        <Link href={"/?from=compare&id=" + res.id}>
+          <Button variant="soft" className="mt-2">
+            {"选择对比"}
+          </Button>
+        </Link>
+      )}
+
+      <ul className="mt-5 text-stone-300 text-sm">
+        <li>
+          <sup>*</sup>此处预览的尺寸为了便于产看，进行了等比缩小一倍处理
+        </li>
+        <li>
+          <sup>*</sup>
+          相机尺寸通常包含了完整尺寸，包括目镜及手柄，所以轮廓可能会显得比较大一些，后期会陆续更新真实照片
+        </li>
+      </ul>
     </div>
   );
 }

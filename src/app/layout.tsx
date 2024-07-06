@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import "@radix-ui/themes/styles.css";
 import Layout from "@/components/layout";
 import { Theme } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const dynamic = "force-dynamic";
 

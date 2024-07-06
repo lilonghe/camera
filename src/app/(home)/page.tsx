@@ -1,26 +1,24 @@
-import db from "@/db";
+import { getCameras } from "@/actions";
 import { FrameColor, FrameMap } from "@/db/format";
-import { ICameraListItem } from "@/db/interface";
-import { Badge, BadgeProps, Box, Card, Text, Tooltip } from "@radix-ui/themes";
+import { IPageProps } from "@/types/interface";
+import { Badge, BadgeProps, Card, Tooltip } from "@radix-ui/themes";
 import Link from "next/link";
 
-export default async function Home() {
-  async function getCameras() {
-    "use server";
-    const result = await db.query(
-      "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize from camera order by publishDate desc,createdAt desc limit 30"
-    );
-    return result[0] as ICameraListItem[];
-  }
-
+export default async function Home({ searchParams }: IPageProps) {
   const res = await getCameras();
+  const compareFromId = searchParams["id"];
+
   return (
     <main className="page content">
       <section className="flex flex-wrap justify-between gap-y-5 gap-x-3">
         {res.map((item) => (
           <Link
             key={item.id}
-            href={"/camera/" + item.id}
+            href={
+              compareFromId
+                ? `/camera/${compareFromId}?targetId=${item.id}`
+                : `/camera/${item.id}`
+            }
             className="w-[220px] flex-grow"
           >
             <Card variant="surface">

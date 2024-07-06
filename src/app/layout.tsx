@@ -7,7 +7,7 @@ import "./globals.css";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Camera",
+  title: "Camera - 相机",
 };
 
 export default function RootLayout({

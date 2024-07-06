@@ -23,7 +23,7 @@ export default function Filter({
     <div className="flex">
       <TextField.Root
         placeholder="相机名称或型号"
-        className="w-[200px] outline-none"
+        className="w-[165px] outline-none"
         variant="soft"
         defaultValue={params["keyword"]}
         ref={inputRef}

@@ -1,6 +1,7 @@
 import { FrameColor, FrameMap } from "@/db/format";
 import { ICameraListItem } from "@/db/interface";
 import { Badge, BadgeProps, Tooltip } from "@radix-ui/themes";
+import VisitCount from "./visit-count";
 
 export default function MetaInfo(res: ICameraListItem) {
   return (
@@ -22,6 +23,8 @@ export default function MetaInfo(res: ICameraListItem) {
         </Badge>
       </Tooltip>
       <Badge>{res.weight}g</Badge>
+
+      <VisitCount cameraId={res.id} />
     </div>
   );
 }

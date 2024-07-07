@@ -1,6 +1,7 @@
 import { getCamera } from "@/actions";
 import { IPageProps } from "@/types/interface";
 import { Button } from "@radix-ui/themes";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { ReactNode } from "react";
 import Dimension from "./components/dimension";
@@ -19,11 +20,16 @@ export default async function CameraDetail({
   params,
   searchParams,
 }: IPageProps) {
-  const res = await getCamera({ id: params.id });
+  const headersList = headers();
+  const extraParams = {
+    userAgent: headersList.get("user-agent") || "",
+    ip: headersList.get("x-real-ip") || "",
+  };
+  const res = await getCamera({ id: params.id, ...extraParams });
 
   let target;
   if (searchParams["targetId"]) {
-    target = await getCamera({ id: searchParams["targetId"] });
+    target = await getCamera({ id: searchParams["targetId"], ...extraParams });
   }
 
   return (

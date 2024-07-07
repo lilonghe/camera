@@ -1,7 +1,7 @@
 "use server";
 import db from "@/db";
 import { ICameraListItem } from "@/db/interface";
-import { IPageProps } from "@/types/interface";
+import { RowDataPacket } from "mysql2";
 import { revalidatePath } from "next/cache";
 
 export async function getCameras({ keyword = "" }) {
@@ -28,10 +28,36 @@ export async function getCameras({ keyword = "" }) {
   return result[0] as ICameraListItem[];
 }
 
-export async function getCamera({ id }: IPageProps["params"]) {
+export interface getCameraProps {
+  id: string;
+  userAgent: string;
+  ip: string;
+}
+
+export async function getCamera({ id, userAgent, ip }: getCameraProps) {
   const result = await db.query(
     "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList from camera where id = ?",
     [id]
   );
+
+  // add visit record
+  await db.execute(
+    "insert into visit (userAgent, ip, cameraId) values (?, ?, ?)",
+    [userAgent, ip, id]
+  );
+
   return (result[0] as ICameraListItem[])[0];
+}
+
+/**
+ * 统计一款相机的浏览次数，根据 ip 去重
+ * @param cameraId
+ * @returns
+ */
+export async function getCameraVisitCount(cameraId: string) {
+  const [rows] = await db.query<RowDataPacket[]>(
+    "select count(DISTINCT ip) as count from visit where cameraId = ? group by cameraId",
+    [cameraId]
+  );
+  return rows[0] as { count: number };
 }

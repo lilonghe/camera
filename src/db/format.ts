@@ -3,6 +3,7 @@ export enum FrameEnum {
   full = "full",
   medium = "medium",
   large = "large",
+  M43 = "M43",
 }
 
 export const FrameMap: Record<FrameEnum, string> = {
@@ -10,6 +11,7 @@ export const FrameMap: Record<FrameEnum, string> = {
   [FrameEnum.full]: "全画幅",
   [FrameEnum.medium]: "中画幅",
   [FrameEnum.large]: "大画幅",
+  [FrameEnum.M43]: "M43",
 };
 
 export const FrameColor: Record<FrameEnum, string> = {
@@ -17,4 +19,5 @@ export const FrameColor: Record<FrameEnum, string> = {
   [FrameEnum.full]: "blue",
   [FrameEnum.medium]: "green",
   [FrameEnum.large]: "orange",
+  [FrameEnum.M43]: "mint",
 };

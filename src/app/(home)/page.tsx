@@ -16,6 +16,7 @@ export default async function Home({ searchParams }: IPageProps) {
         {res.map((item) => (
           <Link
             key={item.id}
+            prefetch={false}
             href={
               compareFromId
                 ? `/camera/${compareFromId}?targetId=${item.id}`

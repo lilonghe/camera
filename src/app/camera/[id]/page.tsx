@@ -1,12 +1,25 @@
-import { getCamera } from "@/actions";
+import { getCamera, getCameraForSEO } from "@/actions";
 import { IPageProps } from "@/types/interface";
 import { Button } from "@radix-ui/themes";
+import { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { ReactNode } from "react";
 import Dimension from "./components/dimension";
 import ImageSensor from "./components/image-sensor";
 import MetaInfo from "./components/meta-info";
+
+export async function generateMetadata({
+  params,
+}: IPageProps): Promise<Metadata> {
+  const res = await getCameraForSEO({ id: params.id });
+
+  if (!res) return {};
+  return {
+    title: `${res.brand} ${res.alias || res.model} - Camera`,
+    keywords: [res.brand, res.model, res.keyword],
+  };
+}
 
 const TargetWrapper = ({ children }: { children: ReactNode }) => {
   return (

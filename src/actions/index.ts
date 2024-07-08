@@ -34,6 +34,15 @@ export interface getCameraProps {
   ip: string;
 }
 
+export async function getCameraForSEO({ id }: { id: string }) {
+  const result = await db.query(
+    "select id, brand, model, alias, keyword from camera where id = ?",
+    [id]
+  );
+
+  return (result[0] as ICameraListItem[])[0];
+}
+
 export async function getCamera({ id, userAgent, ip }: getCameraProps) {
   const result = await db.query(
     "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList from camera where id = ?",

@@ -16,7 +16,7 @@ export async function getCameras({ keyword = "" }) {
     values.keyword = `%${keyword}%`;
   }
   const result = await db.query(
-    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize 
+    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, thumbnail 
     from camera 
     ${condition}
     order by publishDate desc,createdAt desc 

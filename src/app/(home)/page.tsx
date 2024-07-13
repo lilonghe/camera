@@ -58,6 +58,17 @@ export default async function Home({ searchParams }: IPageProps) {
                   <Badge>{item.weight}g</Badge>
                 </div>
               </div>
+
+              {item.thumbnail && (
+                <img
+                  loading="lazy"
+                  alt="thumbnail"
+                  src={(process.env.CDN_HOST || "") + item.thumbnail}
+                  className="absolute top-2.5 right-2.5"
+                  width={50}
+                  height={50}
+                />
+              )}
             </Card>
           </Link>
         ))}

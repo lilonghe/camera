@@ -13,4 +13,5 @@ export interface ICameraListItem {
   imageSensorSize?: number[];
   dimensionsList: number[];
   keyword: string;
+  thumbnail?: string;
 }

@@ -1,8 +1,8 @@
 "use client";
 import { IPageProps } from "@/types/interface";
 import { Button, TextField } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function Filter({
   params,
@@ -11,6 +11,8 @@ export default function Filter({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const [keyword, setKeyword] = useState(params["keyword"]);
 
   const handleSearch = () => {
     const newParams = new URLSearchParams(params as Record<string, string>);
@@ -19,14 +21,23 @@ export default function Filter({
     router.push("?" + newParams.toString());
   };
 
+  const handleKeywordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
+
+  useEffect(() => {
+    setKeyword(params["keyword"] || "");
+  }, [params]);
+
   return (
     <div className="flex">
       <TextField.Root
         placeholder="相机名称或型号"
-        className="flex-1 sm:w-[165px] outline-none"
+        className="flex-1 sm:flex-none sm:w-[165px] outline-none"
         variant="soft"
-        defaultValue={params["keyword"]}
+        value={keyword}
         ref={inputRef}
+        onChange={handleKeywordChange}
       ></TextField.Root>
       <Button variant="soft" className="ml-1" onClick={handleSearch}>
         搜索

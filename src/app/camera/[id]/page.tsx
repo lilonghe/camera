@@ -4,6 +4,7 @@ import { Button } from "@radix-ui/themes";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import Dimension from "./components/dimension";
 import ImageSensor from "./components/image-sensor";
@@ -44,6 +45,10 @@ export default async function CameraDetail({
   let target;
   if (searchParams["targetId"]) {
     target = await getCamera({ id: searchParams["targetId"], ...extraParams });
+  }
+
+  if (!res?.model) {
+    notFound();
   }
 
   return (

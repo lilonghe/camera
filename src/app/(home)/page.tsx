@@ -12,7 +12,7 @@ export default async function Home({ searchParams }: IPageProps) {
   return (
     <main className="page content">
       <Filter params={searchParams} />
-      <section className="flex flex-wrap justify-between gap-y-5 gap-x-3 mt-2">
+      <section className="flex flex-wrap justify-between gap-3 mt-3">
         {res.map((item) => (
           <Link
             key={item.id}

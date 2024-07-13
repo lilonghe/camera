@@ -25,7 +25,7 @@ export async function generateMetadata({
 
 const TargetWrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="ml-2 pl-2 border-l border-dashed inline-flex items-center">
+    <div className="sm:ml-2 sm:pl-2 sm:border-l border-dashed inline-flex items-center">
       {children}
     </div>
   );
@@ -53,23 +53,25 @@ export default async function CameraDetail({
 
   return (
     <div className="page content">
-      <h2 className="text-3xl font-medium flex items-center">
-        {res.brand} {res.alias || res.model}
-        {target && (
-          <>
+      <h2 className="text-3xl font-medium flex sm:items-center sm:flex-row flex-col">
+        <div className="flex items-center">
+          {res.brand} {res.alias || res.model}
+          {target && (
             <Button asChild variant="soft" size={"1"} className="ml-1">
               <Link href={"/?from=compare&id=" + target?.id}>更换</Link>
             </Button>
-            <TargetWrapper>
-              {target?.brand} {target?.alias || target?.model}
-              <Button asChild variant="soft" size={"1"} className="ml-1">
-                <Link href={"/?from=compare&id=" + res.id}>更换</Link>
-              </Button>
-            </TargetWrapper>
-          </>
+          )}
+        </div>
+        {target && (
+          <TargetWrapper>
+            {target?.brand} {target?.alias || target?.model}
+            <Button asChild variant="soft" size={"1"} className="ml-1">
+              <Link href={"/?from=compare&id=" + res.id}>更换</Link>
+            </Button>
+          </TargetWrapper>
         )}
       </h2>
-      <div className="text-gray-400 text-sm">
+      <div className="text-gray-400 text-sm flex sm:gap-0 gap-2">
         {res.publishDate?.toLocaleDateString()}
         {target && (
           <TargetWrapper>
@@ -77,7 +79,7 @@ export default async function CameraDetail({
           </TargetWrapper>
         )}
       </div>
-      <div className="mt-2 flex">
+      <div className="mt-2 flex sm:flex-row flex-col">
         <MetaInfo {...res} />
         {target && (
           <TargetWrapper>
@@ -88,9 +90,9 @@ export default async function CameraDetail({
       {res.thumbnail && (
         <div>
           <div className="mt-5 font-thin">预览图</div>
-          <div className="mt-1 flex gap-2 items-end">
+          <div className="mt-2 flex gap-2 items-end">
             <Preview url={res.thumbnail} />
-            {target?.thumbnail && <Preview url={res.thumbnail} />}
+            {target?.thumbnail && <Preview url={target.thumbnail} />}
           </div>
         </div>
       )}

@@ -66,7 +66,6 @@ export default async function Home({ searchParams }: IPageProps) {
                   src={(process.env.CDN_HOST || "") + item.thumbnail}
                   className="absolute top-2.5 right-2.5"
                   width={50}
-                  height={50}
                 />
               )}
             </Card>

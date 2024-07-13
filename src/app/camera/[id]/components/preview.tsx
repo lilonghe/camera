@@ -5,7 +5,6 @@ export default function Preview({ url }: { url: string }) {
         alt="preview"
         src={(process.env.CDN_HOST || "") + url}
         width={100}
-        height={100}
         className="transition-all duration-300 hover:scale-150"
       />
     </div>

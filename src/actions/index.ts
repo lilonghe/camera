@@ -45,7 +45,7 @@ export async function getCameraForSEO({ id }: { id: string }) {
 
 export async function getCamera({ id, userAgent, ip }: getCameraProps) {
   const result = await db.query(
-    "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList from camera where id = ?",
+    "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList, thumbnail from camera where id = ?",
     [id]
   );
 

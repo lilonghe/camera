@@ -8,6 +8,7 @@ import { ReactNode } from "react";
 import Dimension from "./components/dimension";
 import ImageSensor from "./components/image-sensor";
 import MetaInfo from "./components/meta-info";
+import Preview from "./components/preview";
 
 export async function generateMetadata({
   params,
@@ -79,7 +80,16 @@ export default async function CameraDetail({
           </TargetWrapper>
         )}
       </div>
-      {(res.imageSensorSize || target?.imageSensorSize) && (
+      {res.thumbnail && (
+        <div>
+          <div className="mt-5 font-thin">预览图</div>
+          <div className="mt-1 flex gap-2 items-end">
+            <Preview url={res.thumbnail} />
+            {target?.thumbnail && <Preview url={res.thumbnail} />}
+          </div>
+        </div>
+      )}
+      {res.imageSensorSize && (
         <>
           <div className="mt-5 font-thin">传感器</div>
           <div className="mt-1 flex gap-2 items-end">
@@ -89,7 +99,7 @@ export default async function CameraDetail({
         </>
       )}
 
-      {(res.dimensionsList || target?.dimensionsList) && (
+      {res.dimensionsList && (
         <>
           <div className="mt-5 font-thin">尺寸预览</div>
           <div className="overflow-y-auto flex flex-col gap-2 mt-1">

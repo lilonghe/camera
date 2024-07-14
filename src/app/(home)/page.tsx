@@ -1,4 +1,5 @@
 import { getCameras } from "@/actions";
+import LazyImg from "@/components/lazy-img";
 import { FrameColor, FrameMap } from "@/db/format";
 import { IPageProps } from "@/types/interface";
 import { Badge, BadgeProps, Card, Tooltip } from "@radix-ui/themes";
@@ -60,7 +61,7 @@ export default async function Home({ searchParams }: IPageProps) {
               </div>
 
               {item.thumbnail && (
-                <img
+                <LazyImg
                   loading="lazy"
                   alt="thumbnail"
                   src={(process.env.CDN_HOST || "") + item.thumbnail}

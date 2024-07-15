@@ -19,7 +19,8 @@ export async function generateMetadata({
   if (!res) return {};
   return {
     title: `${res.brand} ${res.alias || res.model} - Camera`,
-    keywords: [res.brand, res.model, res.keyword],
+    keywords: [res.brand, res.model, ...res.keyword.split(",")],
+    other: {},
   };
 }
 
@@ -58,7 +59,9 @@ export default async function CameraDetail({
           {res.brand} {res.alias || res.model}
           {target && (
             <Button asChild variant="soft" size={"1"} className="ml-1">
-              <Link href={"/?from=compare&id=" + target?.id}>更换</Link>
+              <Link href={"/?from=compare&id=" + target?.id} rel="nofollow">
+                更换
+              </Link>
             </Button>
           )}
         </div>
@@ -66,7 +69,9 @@ export default async function CameraDetail({
           <TargetWrapper>
             {target?.brand} {target?.alias || target?.model}
             <Button asChild variant="soft" size={"1"} className="ml-1">
-              <Link href={"/?from=compare&id=" + res.id}>更换</Link>
+              <Link href={"/?from=compare&id=" + res.id} rel="nofollow">
+                更换
+              </Link>
             </Button>
           </TargetWrapper>
         )}
@@ -117,7 +122,7 @@ export default async function CameraDetail({
       )}
 
       {!target && (
-        <Link href={"/?from=compare&id=" + res.id}>
+        <Link href={"/?from=compare&id=" + res.id} rel="nofollow">
           <Button variant="soft" className="mt-2">
             {"选择对比"}
           </Button>

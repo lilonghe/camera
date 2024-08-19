@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-const gui = new GUI();
 
 const getContentHeight = () => window.innerHeight - 47;
 
@@ -75,7 +74,11 @@ export function renderView(dom: HTMLElement) {
       visible: false,
     },
   ];
+  const gui = new GUI();
+  gui.title("灯光控制");
 
+  // 平移视角
+  controls.target.set(0, 1.5, 0);
   // 模型
   const loader = new GLTFLoader();
   loader.load(
@@ -128,6 +131,8 @@ export function renderView(dom: HTMLElement) {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, getContentHeight());
   });
+
+  return renderer;
 }
 
 interface AppendLightType {
@@ -184,9 +189,9 @@ export function appendLight({
 
   guiLight.add(light, "intensity", 0, 100).name("光照强度");
 
-  guiLight.addColor(light, "color");
+  guiLight.addColor(light, "color").name("灯光颜色");
 
-  const guiPos = guiLight.addFolder("位置");
+  const guiPos = guiLight.addFolder("灯光位置");
   guiPos.close();
   guiPos.add(light.position, "x", -10, 10);
   guiPos.add(light.position, "y", 0, 5);

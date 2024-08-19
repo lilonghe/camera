@@ -6,3 +6,7 @@
 div[data-radix-popper-content-wrapper]:has(.rt-Text:empty) {
   display: none;
 }
+
+.lil-gui.autoPlace {
+  top: 50px;
+}

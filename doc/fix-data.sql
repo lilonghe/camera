@@ -13,3 +13,5 @@ where CAST(JSON_UNQUOTE(JSON_EXTRACT(imageSensorSize, '$[0]')) AS DECIMAL(10, 1)
 update camera 
 set frame = 'large' 
 where CAST(JSON_UNQUOTE(JSON_EXTRACT(imageSensorSize, '$[0]')) AS DECIMAL(10, 1)) > 50;
+
+update camera set keyword = model where keyword is null;

@@ -18,6 +18,11 @@ export default function LazyImg({ src, margin, ...rest }: LazyImgType) {
     img.onload = () => {
       imgRef.current && (imgRef.current.src = src);
     };
+    img.onerror = () => {
+      if (imgRef.current) {
+        imgRef.current.style.display = "none";
+      }
+    };
     img.src = src;
   };
 

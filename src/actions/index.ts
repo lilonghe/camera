@@ -20,7 +20,7 @@ export async function getCameras({ keyword = "" }) {
     from camera 
     ${condition}
     order by publishDate desc,createdAt desc 
-    limit 30`,
+    limit 50`,
     values
   );
 

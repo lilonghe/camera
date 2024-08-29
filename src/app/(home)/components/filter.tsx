@@ -2,7 +2,7 @@
 import { IPageProps } from "@/types/interface";
 import { Button, TextField } from "@radix-ui/themes";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 
 export default function Filter({
   params,
@@ -25,6 +25,12 @@ export default function Filter({
     setKeyword(e.target.value);
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   useEffect(() => {
     setKeyword(params["keyword"] || "");
   }, [params]);
@@ -38,6 +44,7 @@ export default function Filter({
         value={keyword}
         ref={inputRef}
         onChange={handleKeywordChange}
+        onKeyDown={handleKeyDown}
       ></TextField.Root>
       <Button variant="soft" className="ml-1" onClick={handleSearch}>
         搜索

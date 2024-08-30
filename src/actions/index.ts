@@ -4,22 +4,56 @@ import { ICameraListItem } from "@/db/interface";
 import { RowDataPacket } from "mysql2";
 import { revalidatePath } from "next/cache";
 
-export async function getCameras({ keyword = "" }) {
-  keyword = keyword.replaceAll("-", "").toLowerCase();
+export async function getCameras({
+  keyword,
+  sortBy,
+  timeRange,
+  brand,
+}: {
+  keyword?: string;
+  sortBy?: string;
+  timeRange?: number;
+  brand?: string;
+}) {
+  keyword = keyword?.replaceAll("-", "").toLowerCase();
 
   let condition = "where 1 = 1",
-    values: any = {};
+    orderBy = "order by ";
+  const values: any = {};
+
   if (keyword) {
     condition += ` and (
       keyword LIKE :keyword
     )`;
     values.keyword = `%${keyword}%`;
   }
+
+  if (timeRange) {
+    const timeRangeStart = new Date();
+    timeRangeStart.setDate(timeRangeStart.getDate() - timeRange);
+    condition += ` and publishDate >= :timeRangeStart`;
+    values.timeRangeStart = timeRangeStart;
+  }
+
+  if (brand) {
+    condition += ` and brand = :brand`;
+    values.brand = brand;
+  }
+
+  if (sortBy) {
+    if (sortBy === "pixel") {
+      orderBy += `effectivePixels desc,`;
+    } else if (sortBy === "weight") {
+      orderBy += `weight desc,`;
+    }
+  }
+  orderBy += ` publishDate desc`;
+
   const result = await db.query(
     `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, thumbnail 
     from camera 
     ${condition}
-    order by publishDate desc,createdAt desc 
+    ${orderBy}
     limit 50`,
     values
   );

@@ -7,7 +7,16 @@ import Link from "next/link";
 import Filter from "./components/filter";
 
 export default async function Home({ searchParams }: IPageProps) {
-  const res = await getCameras({ keyword: searchParams["keyword"] });
+  const timeRange = searchParams["timeRange"]
+    ? parseInt(searchParams["timeRange"])
+    : undefined;
+
+  const res = await getCameras({
+    keyword: searchParams["keyword"],
+    sortBy: searchParams["sortBy"],
+    timeRange,
+    brand: searchParams["brand"],
+  });
   const compareFromId = searchParams["id"];
 
   return (
@@ -73,7 +82,7 @@ export default async function Home({ searchParams }: IPageProps) {
           </Link>
         ))}
         {res.length <= 0 && (
-          <div className="leading-[100px] text-center text-gray-400 text-sm">
+          <div className="leading-[100px] text-center text-gray-400 text-sm min-h-[60vh]">
             未搜索到相关结果
           </div>
         )}

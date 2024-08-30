@@ -1,8 +1,10 @@
 "use client";
+import useDebounce from "@/hooks/useDebounce";
 import { IPageProps } from "@/types/interface";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button, DropdownMenu, TextField } from "@radix-ui/themes";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { brandOptions, sortByOptions, timeRangeOptions } from "./config";
 
 export default function Filter({
   params,
@@ -13,10 +15,28 @@ export default function Filter({
   const router = useRouter();
   const pathname = usePathname();
   const [keyword, setKeyword] = useState(params["keyword"]);
+  const debouncedKeyword = useDebounce(keyword, 300);
+
+  const [sortBy, setSortBy] = useState<string | undefined>(params["sortBy"]);
+  const [timeRange, setTimeRange] = useState<number | undefined>(
+    params["timeRange"] ? parseInt(params["timeRange"]) : undefined
+  );
+  const [brand, setBrand] = useState<string | undefined>(params["brand"]);
 
   const handleSearch = () => {
-    const newParams = new URLSearchParams(params as Record<string, string>);
-    newParams.set("keyword", inputRef.current?.value || "");
+    const newParams = new URLSearchParams();
+    if (inputRef.current?.value) {
+      newParams.set("keyword", inputRef.current?.value);
+    }
+    if (sortBy) {
+      newParams.set("sortBy", sortBy);
+    }
+    if (timeRange) {
+      newParams.set("timeRange", timeRange.toString());
+    }
+    if (brand) {
+      newParams.set("brand", brand);
+    }
 
     router.push("?" + newParams.toString());
   };
@@ -25,15 +45,44 @@ export default function Filter({
     setKeyword(e.target.value);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
+  const handleSortByChange = (key: string) => {
+    if (key === sortBy) {
+      setSortBy(undefined);
+    } else {
+      setSortBy(key);
+    }
+  };
+
+  const handleBrandChange = (key: string) => {
+    if (key === brand) {
+      setBrand(undefined);
+    } else {
+      setBrand(key);
+    }
+  };
+
+  const handleTimeRangeChange = (key?: number) => {
+    if (timeRange === key) {
+      setTimeRange(undefined);
+    } else {
+      setTimeRange(key);
     }
   };
 
   useEffect(() => {
-    setKeyword(params["keyword"] || "");
+    setKeyword(params["keyword"]);
+    setSortBy(params["sortBy"]);
+    setTimeRange(
+      params["timeRange"] ? parseInt(params["timeRange"]) : undefined
+    );
+    setBrand(params["brand"]);
   }, [params]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [debouncedKeyword, sortBy, timeRange, brand]);
+
+  const sortLabel = sortByOptions.find((item) => item.value === sortBy)?.label;
 
   return (
     <div className="flex">
@@ -41,14 +90,68 @@ export default function Filter({
         placeholder="相机名称或型号"
         className="flex-1 sm:flex-none sm:w-[165px] outline-none"
         variant="soft"
-        value={keyword}
+        value={keyword || ""}
         ref={inputRef}
         onChange={handleKeywordChange}
-        onKeyDown={handleKeyDown}
       ></TextField.Root>
-      <Button variant="soft" className="ml-1" onClick={handleSearch}>
-        搜索
-      </Button>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger className="ml-1">
+          <Button variant="soft" color={sortBy ? "indigo" : undefined}>
+            {sortLabel ? "排序方式：" + sortLabel : "排序方式"}
+            <DropdownMenu.TriggerIcon />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          {sortByOptions.map((item) => (
+            <DropdownMenu.CheckboxItem
+              key={item.value}
+              checked={sortBy === item.value}
+              onCheckedChange={() => handleSortByChange(item.value)}
+            >
+              {item.label}
+            </DropdownMenu.CheckboxItem>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger className="ml-1">
+          <Button variant="soft" color={timeRange ? "indigo" : undefined}>
+            {timeRangeOptions.find((item) => item.value === timeRange)?.label ||
+              "时间范围"}
+            <DropdownMenu.TriggerIcon />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          {timeRangeOptions.map((item) => (
+            <DropdownMenu.CheckboxItem
+              key={item.value}
+              checked={timeRange === item.value}
+              onCheckedChange={() => handleTimeRangeChange(item.value)}
+            >
+              {item.label}
+            </DropdownMenu.CheckboxItem>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger className="ml-1">
+          <Button variant="soft" color={brand ? "indigo" : undefined}>
+            {brandOptions.find((item) => item.value === brand)?.label || "品牌"}
+            <DropdownMenu.TriggerIcon />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          {brandOptions.map((item) => (
+            <DropdownMenu.CheckboxItem
+              key={item.value}
+              checked={brand === item.value}
+              onCheckedChange={() => handleBrandChange(item.value)}
+            >
+              {item.label}
+            </DropdownMenu.CheckboxItem>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     </div>
   );
 }

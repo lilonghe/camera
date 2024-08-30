@@ -85,17 +85,17 @@ export default function Filter({
   const sortLabel = sortByOptions.find((item) => item.value === sortBy)?.label;
 
   return (
-    <div className="flex">
+    <div className="flex flex-wrap gap-y-2">
       <TextField.Root
         placeholder="相机名称或型号"
-        className="flex-1 sm:flex-none sm:w-[165px] outline-none"
+        className="flex-1 min-w-full sm:min-w-[auto] sm:flex-none sm:w-[165px] outline-none"
         variant="soft"
         value={keyword || ""}
         ref={inputRef}
         onChange={handleKeywordChange}
       ></TextField.Root>
       <DropdownMenu.Root>
-        <DropdownMenu.Trigger className="ml-1">
+        <DropdownMenu.Trigger className="sm:ml-1">
           <Button variant="soft" color={sortBy ? "indigo" : undefined}>
             {sortLabel ? "排序方式：" + sortLabel : "排序方式"}
             <DropdownMenu.TriggerIcon />

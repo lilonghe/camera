@@ -19,13 +19,17 @@ export default function Exif() {
 
       try {
         const data = await exifr.parse(file, { xmp: true });
-        console.log(data);
+
+        if (!data) {
+          setError("无法获取所选照片的信息");
+          return;
+        }
         setExifData(data);
 
         const blobUrl = URL.createObjectURL(file);
         setBlobUrl(blobUrl);
-      } catch (err) {
-        setError("Error reading EXIF data");
+      } catch (err: any) {
+        setError(err.message);
       }
     } else {
       setFile(null);
@@ -44,20 +48,21 @@ export default function Exif() {
       <div className="mb-3 text-gray-500">
         查看照片的具体信息，如光圈，快门，ISO，相机型号，序列号，镜头型号，序列号等
       </div>
-      <div className="w-full sm:w-[300px]">
-        <Upload onChange={handleFileChange} />
-      </div>
-      {blobUrl && (
-        <div className="mt-5 flex flex-col sm:flex-row gap-5">
+
+      <div className="mt-5 flex flex-col sm:flex-row gap-5 mb-5">
+        <div className="w-full sm:w-[300px]">
+          <Upload onChange={handleFileChange} />
+        </div>
+        {blobUrl && (
           <img
             src={blobUrl}
             alt="image"
-            className="max-w-[300px] max-h-[300px] object-cover"
+            className="max-w-[256px] max-h-[256px] object-cover"
           />
+        )}
+      </div>
 
-          {exifData && <ExifDetail data={exifData} />}
-        </div>
-      )}
+      {exifData && <ExifDetail data={exifData} />}
 
       <AlertDialog.Root open={error != undefined}>
         <AlertDialog.Content maxWidth="450px">

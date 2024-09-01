@@ -8,8 +8,6 @@ const showKeys = [
   "FocalLength",
   "ExifImageWidth",
   "ExifImageHeight",
-  "Make",
-  "Model",
   "ImageNumber",
 ];
 
@@ -37,12 +35,12 @@ export default function ExifDetail({ data }: { data: IExifData }) {
         <div className="flex gap-2">
           <Badge color="orange">相机型号：{data.Model}</Badge>
           <Badge color="orange">相机序列号：{data.SerialNumber}</Badge>
-          <span className="text-sm text-gray-500">by {data.Make}</span>
+          <span className="text-sm text-gray-400">by {data.Make}</span>
         </div>
         <div className="flex gap-2">
           <Badge color="blue">镜头型号：{data.LensModel}</Badge>
           <Badge color="blue">镜头序列号：{data.LensSerialNumber}</Badge>
-          <span className="text-sm text-gray-500">by {data.LensMake}</span>
+          <span className="text-sm text-gray-400">by {data.LensMake}</span>
         </div>
         <div className="flex gap-2">
           <Badge>

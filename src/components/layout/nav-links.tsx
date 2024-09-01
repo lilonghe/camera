@@ -9,21 +9,21 @@ export default function NavLinks() {
   const links = [
     {
       href: "/",
-      label: "Home",
+      label: "相机",
     },
     {
       href: "/tools",
-      label: "Tools",
+      label: "工具",
       children: [
         {
           href: "/tools/exif",
-          label: "EXIF",
+          label: "照片信息",
         },
       ],
     },
     {
       href: "/light",
-      label: "Light",
+      label: "灯光模拟",
     },
   ];
 
@@ -46,12 +46,12 @@ export default function NavLinks() {
         >
           <span className="text-xl font-light">{link.label}</span>
           {link.children && (
-            <ul className="border-t ml-0 absolute top-[44px] left-0 bg-white shadow-lg w-full rounded hidden group-hover/item:block">
+            <ul className="border-t ml-0 absolute top-[44px] left-0 shadow-lg w-full rounded hidden group-hover/item:block">
               {link.children.map((child) => (
                 <li key={child.href}>
                   <Link
                     href={child.href}
-                    className={`text-center px-3 py-2 inline-flex w-full items-center justify-center 
+                    className={`text-center px-3 py-2 inline-flex min-w-full items-center justify-center whitespace-nowrap bg-white 
                       ${
                         pathname === child.href
                           ? ""

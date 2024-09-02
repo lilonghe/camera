@@ -50,13 +50,21 @@ export default function Upload({
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 mt-3">
             <span className="font-semibold">点击上传照片</span> 或拖拽照片到此处
           </p>
+          <p className="text-xs text-gray-500">支持 JPG, JPEG, PNG</p>
+          <p className="text-xs text-gray-400 px-10 mt-2">
+            RAW 文件需要上传到服务器才可以分析
+            <br />
+            服务器带宽较小，且存在数据隐私问题
+            <br />
+            故暂不提供此模式
+          </p>
         </div>
         <input
           id="dropzone-file"
           type="file"
           className="hidden"
           onChange={handleChange}
-          accept=".jpg,.jpeg,.png,.nef"
+          accept=".jpg,.jpeg,.png"
         />
       </label>
     </div>

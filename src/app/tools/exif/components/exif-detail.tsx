@@ -80,12 +80,14 @@ export default function ExifDetail({ data }: { data: IExifData }) {
               照片大小：{data.ExifImageWidth}x{data.ExifImageHeight}
             </Badge>
           )}
-          <Badge>
-            创建时间：
-            {(data.CreateDate as unknown as Date).toLocaleDateString("zh-cn")}
-            &nbsp;
-            {(data.CreateDate as unknown as Date).toLocaleTimeString("zh-cn")}
-          </Badge>
+          {data.CreateDate && (
+            <Badge>
+              创建时间：
+              {(data.CreateDate as unknown as Date).toLocaleDateString("zh-cn")}
+              &nbsp;
+              {(data.CreateDate as unknown as Date).toLocaleTimeString("zh-cn")}
+            </Badge>
+          )}
         </div>
 
         {!showAll && (

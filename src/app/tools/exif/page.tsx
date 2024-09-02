@@ -11,30 +11,23 @@ export default function Exif() {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFile(file);
-      setError(null);
+  const handleFileChange = async (file: File) => {
+    setFile(file);
+    setError(null);
 
-      try {
-        const data = await exifr.parse(file, { xmp: true });
+    try {
+      const data = await exifr.parse(file, { xmp: true });
 
-        if (!data) {
-          setError("无法获取所选照片的信息");
-          return;
-        }
-        setExifData(data);
-
-        const blobUrl = URL.createObjectURL(file);
-        setBlobUrl(blobUrl);
-      } catch (err: any) {
-        setError(err.message);
+      if (!data) {
+        setError("无法获取所选照片的信息");
+        return;
       }
-    } else {
-      setFile(null);
-      setExifData(null);
-      setError(null);
+      setExifData(data);
+
+      const blobUrl = URL.createObjectURL(file);
+      setBlobUrl(blobUrl);
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
@@ -57,7 +50,8 @@ export default function Exif() {
           <img
             src={blobUrl}
             alt="image"
-            className="max-w-[256px] max-h-[256px] object-cover"
+            className="max-h-[256px] object-cover"
+            onError={() => setBlobUrl(null)}
           />
         )}
       </div>

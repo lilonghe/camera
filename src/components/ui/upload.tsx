@@ -1,13 +1,46 @@
 import { FilePlusIcon } from "@radix-ui/react-icons";
-import { ChangeEventHandler } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 
 export default function Upload({
   onChange,
 }: {
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange: (file: File) => void;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onChange(file);
+    }
+  };
+
+  useEffect(() => {
+    const dragEvent = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
+    const dropEvent = (e: DragEvent) => {
+      e.preventDefault();
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        onChange(files[0]);
+      }
+    };
+
+    if (ref.current) {
+      ref.current.addEventListener("dragover", dragEvent);
+      ref.current.addEventListener("drop", dropEvent);
+    }
+
+    return () => {
+      ref.current?.removeEventListener("dragover", dragEvent);
+      ref.current?.removeEventListener("drop", dropEvent);
+    };
+  }, []);
+
   return (
-    <div className="flex items-center justify-center w-full">
+    <div ref={ref} className="flex items-center justify-center w-full">
       <label
         htmlFor="dropzone-file"
         className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500"
@@ -22,7 +55,8 @@ export default function Upload({
           id="dropzone-file"
           type="file"
           className="hidden"
-          onChange={onChange}
+          onChange={handleChange}
+          accept=".jpg,.jpeg,.png,.nef"
         />
       </label>
     </div>

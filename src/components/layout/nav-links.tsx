@@ -6,20 +6,28 @@ import { usePathname } from "next/navigation";
 export default function NavLinks() {
   const pathname = usePathname();
 
-  const links = [
+  const links: {
+    href: string;
+    label: string;
+    children?: { href: string; label: string }[];
+  }[] = [
     {
       href: "/",
       label: "相机",
     },
+    // {
+    //   href: "/tools",
+    //   label: "工具",
+    //   children: [
+    //     {
+    //       href: "/tools/exif",
+    //       label: "照片信息",
+    //     },
+    //   ],
+    // },
     {
-      href: "/tools",
-      label: "工具",
-      children: [
-        {
-          href: "/tools/exif",
-          label: "照片信息",
-        },
-      ],
+      href: "/tools/exif",
+      label: "照片信息解析",
     },
     {
       href: "/light",

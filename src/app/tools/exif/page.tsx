@@ -26,6 +26,11 @@ export default function Exif() {
 
       const blobUrl = URL.createObjectURL(file);
       setBlobUrl(blobUrl);
+
+      // const form = new FormData();
+      // form.append("file", file);
+      // const res = await getExifInfo(form);
+      // console.log("server info", res);
     } catch (err: any) {
       setError(err.message);
     }

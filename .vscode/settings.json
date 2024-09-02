@@ -5,4 +5,7 @@
         "source.fixAll": "explicit",
         "source.fixAll.eslint": "explicit"
     },
+    "cSpell.words": [
+        "Exif"
+    ],
 }

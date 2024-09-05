@@ -121,13 +121,13 @@ export default async function CameraDetail({
         </>
       )}
 
-      {!target && (
+      {/* {!target && (
         <Link href={"/?from=compare&id=" + res.id} rel="nofollow">
           <Button variant="soft" className="mt-2">
             {"选择对比"}
           </Button>
         </Link>
-      )}
+      )} */}
 
       <ul className="mt-5 text-stone-300 text-sm">
         <li>

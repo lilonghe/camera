@@ -29,10 +29,10 @@ export default function NavLinks() {
       href: "/tools/exif",
       label: "照片信息解析",
     },
-    {
-      href: "/light",
-      label: "灯光模拟",
-    },
+    // {
+    //   href: "/light",
+    //   label: "灯光模拟",
+    // },
   ];
 
   return (

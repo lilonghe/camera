@@ -12,6 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: ci action
     
     steps:
     - uses: actions/checkout@v4

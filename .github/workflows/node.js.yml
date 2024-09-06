@@ -34,6 +34,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        source: "./.next/standalone/*,!./.next/standalone/node_modules,./.next/static,./package-lock.json,./pnpm-lock.yaml"
+        source: "./.next/standalone/*,./public/*,./.next/static,./package-lock.json,./pnpm-lock.yaml"
         target: "/services/camera/"
 

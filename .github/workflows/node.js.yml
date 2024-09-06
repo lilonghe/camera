@@ -35,5 +35,5 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         source: "./.next/standalone/.next,./.next/standalone/package.json,./.next/standalone/server.js"
-        target: "/services/camera/camera/.next/standalone/"
+        target: "/services/camera/"
 

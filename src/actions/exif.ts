@@ -6,6 +6,7 @@ import path from "path";
 const docker = new Docker({ socketPath: "/var/run/docker.sock" });
 
 let exifToolContainerId: string = "exiftool";
+// exiftool dockerfile: https://github.com/lilonghe/exiftool-docker
 
 export async function getExifInfo(form: FormData) {
   // save file

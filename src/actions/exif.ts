@@ -11,7 +11,8 @@ export async function getExifInfo(form: FormData) {
   // save file
   const file = form.get("file") as File;
   const fileName = crypto.randomUUID();
-  const filePath = path.resolve(__dirname, fileName);
+  const filePath = path.resolve(process.env.EXIF_UPLOAD_DIR || "", fileName);
+  console.log("Save file to ", filePath);
   fs.writeFileSync(filePath, Buffer.from(await file.arrayBuffer()));
 
   async function runContainer() {
@@ -21,7 +22,9 @@ export async function getExifInfo(form: FormData) {
           "exiftool",
           fileName,
         ]);
-        fs.unlinkSync(filePath);
+        if (process.env.AUTO_DELETE_UPLOAD_FILE != "false") {
+          fs.unlinkSync(filePath);
+        }
         resolve(res);
       } catch (err) {
         console.log("Container error", err);
@@ -46,12 +49,12 @@ async function createExifToolContainer(containerId: string) {
       Cmd: ["tail", "-f", "/dev/null"], // 使用 tail -f /dev/null 命令保持容器运行
       Tty: false,
       HostConfig: {
-        Binds: [path.resolve(__dirname) + ":/app"],
+        Binds: [process.env.EXIF_UPLOAD_DIR + ":/app"],
       },
       name: containerId,
     });
 
-    console.log("Bind path:", path.resolve(__dirname));
+    console.log("Bind path:", process.env.EXIF_UPLOAD_DIR);
 
     // 启动容器
     await container.start();

@@ -1,10 +1,10 @@
 import { getCameras } from "@/actions";
 import LazyImg from "@/components/lazy-img";
-import { FrameColor, FrameMap } from "@/db/format";
 import { IPageProps } from "@/types/interface";
-import { Badge, BadgeProps, Card, Tooltip } from "@radix-ui/themes";
+import { Card, Tooltip } from "@radix-ui/themes";
 import Link from "next/link";
 import Filter from "./components/filter";
+import Parameter from "./components/parameter";
 
 export default async function Home({ searchParams }: IPageProps) {
   const timeRange = searchParams["timeRange"]
@@ -46,27 +46,7 @@ export default async function Home({ searchParams }: IPageProps) {
 
               <div className="mt-2">
                 <p className="text-gray-400 text-sm">{item.brand}</p>
-                <div className="flex gap-1 mt-1">
-                  <Tooltip
-                    content={item.imageSensorSize
-                      ?.map((item) => item + "mm")
-                      .join(" x ")}
-                  >
-                    <Badge
-                      color={FrameColor[item.frame] as BadgeProps["color"]}
-                      className={item.imageSensorSize && "cursor-pointer"}
-                    >
-                      {FrameMap[item.frame]}
-                    </Badge>
-                  </Tooltip>
-
-                  <Tooltip content={item.imageSensor}>
-                    <Badge color="gray" className="cursor-pointer">
-                      {item.effectivePixels}W
-                    </Badge>
-                  </Tooltip>
-                  <Badge>{item.weight}g</Badge>
-                </div>
+                <Parameter item={item} />
               </div>
 
               {item.thumbnail && (

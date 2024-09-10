@@ -1,11 +1,11 @@
+import CameraMoreInfo from "@/components/camera-more-info";
 import { FrameColor, FrameMap } from "@/db/format";
 import { ICameraListItem } from "@/db/interface";
 import { Badge, BadgeProps, Tooltip } from "@radix-ui/themes";
-import VisitCount from "./visit-count";
 
 export default function MetaInfo(res: ICameraListItem) {
   return (
-    <div className="flex gap-1 mt-1">
+    <div className="flex gap-1 mt-1 items-center">
       <Tooltip
         content={res.imageSensorSize?.map((res) => res + "mm").join(" x ")}
       >
@@ -24,7 +24,7 @@ export default function MetaInfo(res: ICameraListItem) {
       </Tooltip>
       <Badge>{res.weight}g</Badge>
 
-      <VisitCount cameraId={res.id} />
+      <CameraMoreInfo data={res} className="ml-2" />
     </div>
   );
 }

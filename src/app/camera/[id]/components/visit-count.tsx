@@ -1,7 +1,6 @@
 "use client";
 
 import { getCameraVisitCount } from "@/actions";
-import { Badge, Tooltip } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
 export default function VisitCount({ cameraId }: { cameraId: string }) {
@@ -17,11 +16,5 @@ export default function VisitCount({ cameraId }: { cameraId: string }) {
     return null;
   }
 
-  return (
-    <Tooltip content={`共有 ${count} 人查看过`}>
-      <Badge color="gray" className="cursor-pointer">
-        {count}
-      </Badge>
-    </Tooltip>
-  );
+  return <span className="text-gray-400 text-xs">有 {count} 人浏览过</span>;
 }

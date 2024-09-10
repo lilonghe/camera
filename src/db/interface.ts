@@ -14,4 +14,11 @@ export interface ICameraListItem {
   dimensionsList: number[];
   keyword: string;
   thumbnail?: string;
+
+  parameter?: {
+    // 机械快门
+    hasMShutter?: boolean;
+    // 防抖
+    ois?: boolean;
+  };
 }

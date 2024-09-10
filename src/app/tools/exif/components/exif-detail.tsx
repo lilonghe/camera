@@ -29,10 +29,12 @@ export default function ExifDetail({ data }: { data: IExifData }) {
     setShowAll(true);
   };
 
+  console.log(data);
+
   return (
     <div className="w-full">
       <div className="mb-5 flex flex-col gap-2">
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Badge color="blue">相机型号：{data.Model}</Badge>
           {data.SerialNumber && (
             <Badge color="blue">相机序列号：{data.SerialNumber}</Badge>
@@ -42,7 +44,7 @@ export default function ExifDetail({ data }: { data: IExifData }) {
 
         {/* Lens info */}
         {data.LensModel && (
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Badge color="blue">镜头型号：{data.LensModel}</Badge>
             {data.LensSerialNumber && (
               <Badge color="blue">镜头序列号：{data.LensSerialNumber}</Badge>
@@ -55,7 +57,7 @@ export default function ExifDetail({ data }: { data: IExifData }) {
 
         <div className="flex gap-2">
           <Badge>
-            快门：{`1/${(1000 / data.ExposureTime / 1000).toFixed()}`}
+            快门：{`1/${(1000 / data.ExposureTime / 1000).toFixed()}s`}
           </Badge>
           <Badge>光圈：F{data.FNumber}</Badge>
           <Badge>ISO：{data.ISO}</Badge>
@@ -66,7 +68,7 @@ export default function ExifDetail({ data }: { data: IExifData }) {
         </div>
 
         {/* 其他信息 */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Badge>
             焦距：{data.FocalLength}mm
             <span className="text-xs text-gray-400">

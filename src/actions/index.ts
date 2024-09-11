@@ -120,7 +120,7 @@ export async function getCamerasByModels(models: string[]) {
     from camera 
     where model in (?)
     order by publishDate desc`,
-    models
+    [models]
   );
 
   return result[0] as ICameraListItem[];

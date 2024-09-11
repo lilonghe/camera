@@ -13,6 +13,10 @@ export default function NavLinks() {
   }[] = [
     {
       href: "/",
+      label: "首页",
+    },
+    {
+      href: "/camera",
       label: "相机",
     },
     // {

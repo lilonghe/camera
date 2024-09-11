@@ -9,17 +9,21 @@ export async function getCameras({
   sortBy,
   timeRange,
   brand,
+  limit = 50,
 }: {
   keyword?: string;
   sortBy?: string;
   timeRange?: number;
   brand?: string;
+  limit?: number;
 }) {
   keyword = keyword?.replaceAll("-", "").toLowerCase();
 
   let condition = "where 1 = 1",
     orderBy = "order by ";
-  const values: any = {};
+  const values: any = {
+    limit: limit,
+  };
 
   if (keyword) {
     condition += ` and (
@@ -54,7 +58,7 @@ export async function getCameras({
     from camera 
     ${condition}
     ${orderBy}
-    limit 50`,
+    limit :limit`,
     values
   );
 
@@ -103,4 +107,21 @@ export async function getCameraVisitCount(cameraId: string) {
     [cameraId]
   );
   return rows[0] as { count: number };
+}
+
+/**
+ * 根据 model 列表获取相机列表
+ * @param models
+ * @returns
+ */
+export async function getCamerasByModels(models: string[]) {
+  const result = await db.query(
+    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList, thumbnail, parameter 
+    from camera 
+    where model in (?)
+    order by publishDate desc`,
+    models
+  );
+
+  return result[0] as ICameraListItem[];
 }

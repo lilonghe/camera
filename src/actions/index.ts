@@ -54,7 +54,7 @@ export async function getCameras({
   orderBy += ` publishDate desc`;
 
   const result = await db.query(
-    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, thumbnail, parameter 
+    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, thumbnail, parameter, price 
     from camera 
     ${condition}
     ${orderBy}
@@ -83,7 +83,7 @@ export async function getCameraForSEO({ id }: { id: string }) {
 
 export async function getCamera({ id, userAgent, ip }: getCameraProps) {
   const result = await db.query(
-    "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList, thumbnail, parameter from camera where id = ?",
+    "select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList, thumbnail, parameter, price from camera where id = ?",
     [id]
   );
 
@@ -116,7 +116,7 @@ export async function getCameraVisitCount(cameraId: string) {
  */
 export async function getCamerasByModels(models: string[]) {
   const result = await db.query(
-    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList, thumbnail, parameter 
+    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList, thumbnail, parameter, price 
     from camera 
     where model in (?)
     order by publishDate desc`,

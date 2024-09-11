@@ -18,18 +18,24 @@ export default function CameraMoreInfo({
     <Tooltip
       title="更多信息"
       content={
-        <div>
-          {data.parameter.hasMShutter !== undefined && (
-            <div className="flex justify-between gap-1">
-              <span>机械快门：</span>
-              <span>{data.parameter.hasMShutter ? "有" : "无"}</span>
-            </div>
-          )}
-          {data.parameter.ois !== undefined && (
-            <div className="flex justify-between gap-1">
-              <span>机身防抖：</span>
-              <span>{data.parameter.ois ? "有" : "无"}</span>
-            </div>
+        <div className="max-w-[160px] break-all">
+          <div className="max-w-[100px]">
+            {data.parameter.hasMShutter !== undefined && (
+              <div className="flex justify-between gap-1">
+                <span>机械快门：</span>
+                <span>{data.parameter.hasMShutter ? "有" : "无"}</span>
+              </div>
+            )}
+            {data.parameter.ois !== undefined && (
+              <div className="flex justify-between gap-1">
+                <span>机身防抖：</span>
+                <span>{data.parameter.ois ? "有" : "无"}</span>
+              </div>
+            )}
+          </div>
+
+          {data.parameter.remark && (
+            <div className="mt-2">{data.parameter.remark}</div>
           )}
         </div>
       }

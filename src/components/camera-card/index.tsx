@@ -19,6 +19,7 @@ export default function CameraCard({ data }: { data: ICameraListItem }) {
           </Tooltip>
           <p className="text-xs text-gray-300">
             {data.publishDate?.toLocaleDateString()}
+            {data.price && <span className="ml-2">¥4399</span>}
           </p>
         </div>
 

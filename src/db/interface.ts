@@ -20,5 +20,9 @@ export interface ICameraListItem {
     hasMShutter?: boolean;
     // 防抖
     ois?: boolean;
+    // 备注
+    remark?: string;
   };
+
+  price?: number;
 }

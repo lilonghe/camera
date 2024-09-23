@@ -3,7 +3,7 @@ import CameraCard from "@/components/camera-card";
 
 export default async function Home() {
   const [res, flagshipRes, latestRes] = await Promise.all([
-    getCamerasByModels(["Z 30", "ILCE-6700", "X-T30 II", "X100VI", "X-S20"]),
+    getCamerasByModels(["Z 30", "ILCE-6700", "X-T30 II", "X100VI", "X-T50"]),
     getCamerasByModels(["Z 9", "ILCE-9M3", "EOS R1"]),
     getCameras({ limit: 5 }),
   ]);

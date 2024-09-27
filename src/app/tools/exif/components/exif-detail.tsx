@@ -59,7 +59,7 @@ export default function ExifDetail({ data }: { data: IExifData }) {
           <Badge>
             快门：{`1/${(1000 / data.ExposureTime / 1000).toFixed()}s`}
           </Badge>
-          <Badge>光圈：F{data.FNumber}</Badge>
+          <Badge>光圈：F{data.FNumber.toFixed(1)}</Badge>
           <Badge>ISO：{data.ISO}</Badge>
           <Badge>白平衡：{data.WhiteBalance}</Badge>
           {data.ExposureCompensation > 0 && (
@@ -70,7 +70,7 @@ export default function ExifDetail({ data }: { data: IExifData }) {
         {/* 其他信息 */}
         <div className="flex gap-2 flex-wrap">
           <Badge>
-            焦距：{data.FocalLength}mm
+            焦距：{data.FocalLength.toFixed(0)}mm
             <span className="text-xs text-gray-400">
               {data.FocalLengthIn35mmFormat &&
                 data.FocalLengthIn35mmFormat !== data.FocalLength &&
@@ -85,7 +85,7 @@ export default function ExifDetail({ data }: { data: IExifData }) {
                 {Math.floor(
                   (data.ExifImageWidth * data.ExifImageHeight) / 10000
                 )}
-                )
+                W )
               </span>
             </Badge>
           )}

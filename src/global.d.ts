@@ -68,4 +68,7 @@ interface IExifData {
 
   ImageNumber: number;
   Lens: string;
+
+  longitude?: number;
+  latitude?: number;
 }

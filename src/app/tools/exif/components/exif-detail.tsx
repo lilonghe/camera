@@ -1,4 +1,5 @@
 import { getExifKeyLabel } from "@/config/exif";
+import { getDecoderLocLink } from "@/utils";
 import { Badge, DataList, ScrollArea } from "@radix-ui/themes";
 import { useState } from "react";
 
@@ -99,13 +100,31 @@ export default function ExifDetail({ data }: { data: IExifData }) {
           )}
         </div>
 
+        {data.longitude && data.latitude && (
+          <div>
+            <small className="text-gray-400">
+              拍摄位置：
+              <a
+                className="hover:text-blue-500"
+                target="_blank"
+                rel="noreferrer"
+                href={getDecoderLocLink(data.longitude, data.latitude)}
+              >
+                {data.longitude.toFixed(4)},{data.latitude.toFixed(4)}
+              </a>
+            </small>
+          </div>
+        )}
+
         {!showAll && (
-          <a
-            className="text-sm text-blue-400 cursor-pointer"
-            onClick={handleShowAll}
-          >
-            显示所有信息
-          </a>
+          <div>
+            <a
+              className="text-sm text-blue-400 cursor-pointer"
+              onClick={handleShowAll}
+            >
+              显示所有原始信息
+            </a>
+          </div>
         )}
       </div>
       {showAll && (

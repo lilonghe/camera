@@ -53,6 +53,8 @@ export const exifKeyMap: Record<keyof IExifData, string> = {
   SubjectDistanceRange: "主体距离范围",
   ImageNumber: "图像编号",
   Lens: "镜头",
+  longitude: "经度",
+  latitude: "纬度",
 };
 
 export const getExifKeyLabel = (key: string) => {

@@ -22,6 +22,10 @@ export default function Exif() {
         setError("无法获取所选照片的信息");
         return;
       }
+      if (!data.Model || !data.ISO) {
+        setError("照片可能已经过处理，无法获取信息");
+        return;
+      }
       setExifData(data);
 
       const blobUrl = URL.createObjectURL(file);

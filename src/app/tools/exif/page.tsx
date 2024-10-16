@@ -19,7 +19,7 @@ export default function Exif() {
       const data = await exifr.parse(file, { xmp: true });
 
       if (!data) {
-        setError("无法获取所选照片的信息");
+        setError("无法获取所选照片的信息，请确保是原始照片");
         return;
       }
       if (!data.Model || !data.ISO) {

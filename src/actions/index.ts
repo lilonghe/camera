@@ -127,7 +127,7 @@ export async function getCamerasByModels(models: string[]) {
 }
 
 async function getDictValue<T = string>(key: string) {
-  const [hotCamera] = await db.query(`select value from dict where key = ?`, key);
+  const [hotCamera] = await db.query('select value from dict where `key` = ?', [key]);
   return (hotCamera as { value: T }[])[0].value || ''
 }
 

@@ -125,3 +125,22 @@ export async function getCamerasByModels(models: string[]) {
 
   return result[0] as ICameraListItem[];
 }
+
+async function getDictValue<T = string>(key: string) {
+  const [hotCamera] = await db.query(`select value from dict where key = ?`, key);
+  return (hotCamera as { value: T }[])[0].value || ''
+}
+
+export async function getHotCameras() {
+  const hostCameras = await getDictValue('hot');
+  
+  const result = await db.query(
+    `select id, brand, model, alias, publishDate, weight, effectivePixels, frame, imageSensor, imageSensorSize, dimensionsList, thumbnail, parameter, price 
+    from camera 
+    where model in (?)
+    order by publishDate desc`,
+    [hostCameras.split(',')]
+  );
+
+  return result[0] as ICameraListItem[];
+}

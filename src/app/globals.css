@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  width: 100%;
+}
+
 /* reset */
 div[data-radix-popper-content-wrapper]:has(.rt-Text:empty) {
   display: none;

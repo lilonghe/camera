@@ -22,14 +22,18 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body>
         <Theme accentColor="gray" panelBackground="solid">
           <Layout>{children}</Layout>
+          {modal}
+          <div id="modal-root" />
         </Theme>
       </body>
     </html>

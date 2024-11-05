@@ -13,9 +13,11 @@ export default function Modal({ children, className = '' }: { children: React.Re
   useEffect(() => {
     if (dialogRef.current && wrapperRef.current) {
       dialogRef.current.style.opacity = '0';
-      dialogRef.current.style.transition = 'transform .3s, opacity .3s';
+      dialogRef.current.style.transform = 'scale(0.3)';
+      dialogRef.current.style.transition = 'all .3s';
+
       wrapperRef.current.style.opacity = '0';
-      wrapperRef.current.style.transition = 'transform .3s, opacity .3s';
+      wrapperRef.current.style.transition = 'all .3s';
     }
 
     if (dialogRef.current && !dialogRef.current?.open) {
@@ -25,9 +27,7 @@ export default function Modal({ children, className = '' }: { children: React.Re
       setTimeout(() => {
         if (dialogRef.current && wrapperRef.current) {
           dialogRef.current.style.opacity = '1';
-          wrapperRef.current.style.opacity = '1';
-        }
-        if (wrapperRef.current) {
+          dialogRef.current.style.transform = 'scale(1)';
           wrapperRef.current.style.opacity = '1';
         }
       })
@@ -37,6 +37,7 @@ export default function Modal({ children, className = '' }: { children: React.Re
   const handleDismiss = () => {
     if (dialogRef.current && wrapperRef.current) {
       dialogRef.current.style.opacity = '0';
+      dialogRef.current.style.transform = 'scale(0.3)';
       wrapperRef.current.style.opacity = '0';
     }
     setTimeout(() => {
